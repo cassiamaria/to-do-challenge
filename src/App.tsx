@@ -1,6 +1,9 @@
 import { TaskList } from './components/TaskList'
 import { Header } from "./components/Header";
-import './styles/global.scss'
+import { Toaster } from 'react-hot-toast';
+import './styles/global.scss';
+
+
 
 
 export function App() {
@@ -8,6 +11,9 @@ export function App() {
     <>
       <Header />
       <TaskList />
+      <Toaster
+        position="top-right"
+      />
     </>
   )
 }

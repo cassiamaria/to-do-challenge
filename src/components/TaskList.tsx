@@ -1,11 +1,12 @@
-import { useState } from 'react'
+import { useState } from 'react';
+import { FiTrash, FiCheckSquare } from 'react-icons/fi'
+import toast from 'react-hot-toast';
 
 import '../styles/tasklist.scss'
 
-import { FiTrash, FiCheckSquare } from 'react-icons/fi'
 
 interface Task {
-  id: number;
+  id: string;
   title: string;
   isComplete: boolean;
 }
@@ -16,14 +17,35 @@ export function TaskList() {
 
   function handleCreateNewTask() {
     // Crie uma nova task com um id random, não permita criar caso o título seja vazio.
+    if(!newTaskTitle){
+      return toast.error('Por favor, insira uma tarefa!');
+    }
+
+    const params = {
+      id: Math.floor(Date.now() * Math.random()).toString(36),
+      title: newTaskTitle,
+      isComplete: false
+    }
+
+    setTasks((oldTasks) => [...oldTasks, params]);
+    setNewTaskTitle('');
+    toast.success('Tarefa adicionada!');
   }
 
-  function handleToggleTaskCompletion(id: number) {
+  function handleToggleTaskCompletion(id: string) {
     // Altere entre `true` ou `false` o campo `isComplete` de uma task com dado ID
+    const taskIsCompleted = tasks.map(task => task.id === id ? {
+      ...task,
+      isComplete: !task.isComplete
+    } : task);
+
+    setTasks(taskIsCompleted);
   }
 
-  function handleRemoveTask(id: number) {
+  function handleRemoveTask(id: string) {
     // Remova uma task da listagem pelo ID
+    const filteredTasks = tasks.filter(task => task.id !== id);
+    setTasks(filteredTasks);
   }
 
   return (
